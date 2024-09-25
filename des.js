@@ -14,8 +14,8 @@ function hexToBin(hex) {
 
 const messageBinary = hexToBin(message);
 const keyBinary = hexToBin(key);
-console.log("Mensagem em binário:", messageBinary);
-console.log("Chave em binário:", keyBinary);
+console.log("Message in binary:", messageBinary);
+console.log("Key in binary:", keyBinary);
 
 
 //                                                          -----> Step 2: Permute the key through the PC-1 table
@@ -36,7 +36,7 @@ function permuteKey(keyBinary, table) {
 }
 
 const permutedKey = permuteKey(keyBinary, PC1);
-console.log("Chave após permutação PC-1:", permutedKey);
+console.log("Key after PC-1 permutation:", permutedKey);
 
 
 //                                                          -----> Step 3: Rotating each half
@@ -73,7 +73,7 @@ const { C0, D0 } = splitKey(permutedKey);
 const rotatedKeys = rotateHalves(C0, D0, rotations);
 
 rotatedKeys.forEach((key, index) => {
-    console.log(`Rodada ${ index + 1 } - C: ${ key.C }, D: ${ key.D }`);
+    console.log(`Round ${ index + 1 } - C: ${ key.C }, D: ${ key.D }`);
 });
 
 
@@ -85,7 +85,7 @@ function concatenateHalves(C, D) {
 
 const concatenatedKeys = rotatedKeys.map((key, index) => {
     const concatenatedKey = concatenateHalves(key.C, key.D);
-    console.log(`Rodada ${ index + 1 } - Chave concatenada: ${ concatenatedKey }`);
+    console.log(`Round ${ index + 1 } - Concatenated key: ${ concatenatedKey }`);
     return concatenatedKey;
 });
 
@@ -109,7 +109,7 @@ function permutePC2(concatenatedKey) {
 
 const subKeys = concatenatedKeys.map((key, index) => {
     const subKey = permutePC2(key);
-    console.log(`Rodada ${ index + 1 } - Subchave de 48 bits: ${ subKey }`);
+    console.log(`Round ${ index + 1 } - 48 bits subkey: ${ subKey }`);
     return subKey;
 });
 
@@ -132,7 +132,7 @@ function permuteMessage(messageBinary) {
 }
 
 const permutedMessage = permuteMessage(messageBinary);
-console.log("Mensagem após permutação IP:", permutedMessage);
+console.log("Message after IP permutation:", permutedMessage);
 
 
 //                                                          -----> Step 7: Encode the data 
@@ -251,7 +251,7 @@ for (let round = 0; round < 16; round++) {
     L = R;
     R = newR;
 
-    console.log(`Rodada ${ round + 1 } - L: ${ L }, R: ${ R }`);
+    console.log(`Round ${ round + 1 } - L: ${ L }, R: ${ R }`);
 }
 
 
@@ -281,7 +281,7 @@ const R16 = `${ R }`;
 const R16L16 = R16 + L16;
 const finalPermutation = applyFinalPermutation(R16L16);
 
-console.log("Mensagem criptografada final:", finalPermutation);
+console.log("Final encrypted message:", finalPermutation);
 
 
 //                                                          -----> Step 25: Convert back into hexadecimal
@@ -297,4 +297,4 @@ function binaryToHex(binary) {
 
 const finalHex = binaryToHex(finalPermutation);
 
-console.log("Mensagem criptografada final (hexadecimal):", finalHex);
+console.log("Final encrypted message (hexadecimal):", finalHex);
